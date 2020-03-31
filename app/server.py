@@ -22,19 +22,21 @@ def detect():
         return jsonify({'error': 'No valid request body, json missing!'})
     else:
         img_base64_data = request_data['img']
-        convert_and_save(img_base64_data)
-        return {"response": "ok"}
+        filepath = convert_and_save(img_base64_data)
+        object_detection_result = execute_darknet(filepath)
+        return {"response": object_detection_result}
 
 def convert_and_save(b64_string):
     base64_decoded = base64.b64decode(b64_string)
     timestamp = time.gmtime()
     filename = time.strftime("%Y_%m_%d__%H_%M_%S", timestamp) + ".jpeg"
-    filepath = path.join("app", "tmp", filename)
+    filepath = path.join("tmp", filename)
     with open(filepath, "wb") as fh:
         fh.write(base64_decoded)
+    return filepath
 
 def execute_darknet(img_filepath):
-    darknet_command = ['./darknet', 'detect', 'cfg/yolov3.cfg', 'yolov3.weights', img_filepath]
+    darknet_command = ['./darknet', 'detect', 'cfg/yolov3.cfg', 'yolov3.weights', "../app/" + img_filepath]
     process_darknet = subprocess.Popen(darknet_command, 
                             stdout=subprocess.PIPE,
                             universal_newlines=True,

@@ -1,5 +1,6 @@
 /temp
 /app/tmp/*
+!/app/tmp/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
