@@ -36,7 +36,7 @@ def convert_and_save(b64_string):
     return filepath
 
 def execute_darknet(img_filepath):
-    darknet_command = ['./darknet', 'detect', 'cfg/yolov3.cfg', 'yolov3.weights', "../app/" + img_filepath]
+    darknet_command = ['./darknet', 'detect', 'cfg/yolov3.cfg', 'yolov3.weights', "../iseeyou/app/" + img_filepath]
     process_darknet = subprocess.Popen(darknet_command, 
                             stdout=subprocess.PIPE,
                             universal_newlines=True,
