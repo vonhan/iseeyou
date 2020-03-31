@@ -6,7 +6,7 @@ ARG OPENCV_VERSION="4.0.1"
 
 # install dependencies
 RUN apt-get update -y
-RUN apt-get install -y libopencv-dev yasm libjpeg-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils pkg-config curl build-essential checkinstall cmake
+RUN apt-get install -y libopencv-dev yasm libjpeg-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils pkg-config curl build-essential checkinstall cmake python-pip
 
 # download opencv
 RUN curl -sL https://github.com/opencv/opencv/archive/$OPENCV_VERSION.tar.gz | tar xvz -C /tmp
@@ -35,12 +35,16 @@ WORKDIR /
 RUN git clone https://github.com/pjreddie/darknet
 RUN cd darknet && perl -pi -e 's/OPENCV=0/OPENCV=1/gs' Makefile && make -j3
 
-COPY ./predictions /predictions 
-
 WORKDIR /darknet
 RUN wget https://pjreddie.com/media/files/yolov3.weights
 
+WORKDIR /
 
+RUN git clone https://github.com/vonhan/iseeyou.git
+RUN pip install flask
+WORKDIR /iseeyou/app
+ENV FLASK_APP=server.py
+CMD ["flask", "run", "--host=0.0.0.0"] 
 # # cleanup package manager
 # RUN apt-get remove --purge -y curl build-essential checkinstall cmake
 # RUN apt-get autoclean && apt-get clean
