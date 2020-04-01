@@ -42,22 +42,20 @@ def execute_darknet(img_filepath):
                             universal_newlines=True,
                             cwd=r'/darknet/')
 
-    yolov3_weights_loaded = False
     result = ''
     while True:
         output = process_darknet.stdout.readline()
         print(output.strip())
-
-        if 'Done!' in output or yolov3_weights_loaded:
-            yolov3_weights_loaded = True
-            result = result + output
+        result = result + ' ' + output
 
         return_code = process_darknet.poll()
         if return_code is not None:
             print('RETURN CODE', return_code)
             # Process has finished, read rest of the output 
             for output in process_darknet.stdout.readlines():
-                print(output.strip())
+                line = output.strip()
+                print(line)
+                result = result + ' ' + line
             break
 
     return result
