@@ -42,7 +42,7 @@ def convert_and_save(b64_string):
 
 
 def getPredictionsImageInBase64():
-    image_predictions_filepath = path.join("tmp", "predictions.jpg")
+    image_predictions_filepath = path.join("/darknet", "predictions.jpg")
     with open(image_predictions_filepath, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         return encoded_string
