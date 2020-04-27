@@ -48,7 +48,6 @@ RUN pip install flask
 WORKDIR /iseeyou/app
 ENV FLASK_APP=server.py
 CMD ["flask", "run", "--host=0.0.0.0"] 
-
 # # cleanup package manager
 # RUN apt-get remove --purge -y curl build-essential checkinstall cmake
 # RUN apt-get autoclean && apt-get clean
