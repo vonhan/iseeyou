@@ -40,11 +40,15 @@ RUN wget https://pjreddie.com/media/files/yolov3.weights
 
 WORKDIR /
 
-RUN git clone https://github.com/vonhan/iseeyou.git
+RUN mkdir iseeyou
+WORKDIR /iseeyou
+COPY /app /iseeyou/app
+#RUN git clone https://github.com/vonhan/iseeyou.git
 RUN pip install flask
 WORKDIR /iseeyou/app
 ENV FLASK_APP=server.py
 CMD ["flask", "run", "--host=0.0.0.0"] 
+
 # # cleanup package manager
 # RUN apt-get remove --purge -y curl build-essential checkinstall cmake
 # RUN apt-get autoclean && apt-get clean
